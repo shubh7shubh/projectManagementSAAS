@@ -10,7 +10,7 @@ import { useContext } from "react";
 // import { GlobalContext } from "@components/context";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { GlobalContext } from "@components/context";
+import { GlobalContext } from "../context";
 
 
 

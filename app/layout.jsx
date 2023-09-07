@@ -1,9 +1,13 @@
-import Header from '@components/header'
-import Sidebar from '@components/sidebar'
+
 // import '.styles/globals.css'
 import '../styles/globals.css'
 import { Inter } from 'next/font/google'
-import GlobalState from '@components/context'
+// import Header from '@components/header'
+// import Sidebar from '@components/sidebar'
+// import GlobalState from '@components/context'
+import Header from '../components/header'
+import Sidebar from '../components/sidebar'
+import GlobalState from '../components/context'
 
 const inter = Inter({ subsets: ['latin'] })
 
