@@ -28,9 +28,9 @@ const menuItems = [
     icon: <TbBrandProducthunt size={25} />,
   },
   {
-    id: "calendar",
-    label: "Calendar",
-    path: "/",
+    id: "clients",
+    label: "Clients",
+    path: "/admin/clients",
     icon: <PiUsersFourLight size={25} />,
   },
   {
@@ -54,7 +54,7 @@ const menuItems = [
 ];
 
 export default function Sidebar() {
-    const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
+    // const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
     // const {status} = useSession()
   
     const pathName = usePathname();
@@ -75,8 +75,10 @@ export default function Sidebar() {
     <>
   <aside
       style={{borderRight:"1px solid gray"}}
+    //   className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear lg:static lg:translate-x-0
+    // ${sideBarOpen ? "translate-x-0" : "-translate-x-full"}
+    // `}
       className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear lg:static lg:translate-x-0
-    ${sideBarOpen ? "translate-x-0" : "-translate-x-full"}
     `}
     >
       <div className="flex items-center justify-center gap-2 px-6 py-5.5 lg:py-6.5">
@@ -92,8 +94,8 @@ export default function Sidebar() {
                 <li key={menuItem.id}>
                   <label
                     onClick={() => handlenavigate(menuItem)}
-                    className={`group relative cursor-pointer flex items-center gap-2.5 rounded-sm py-4 px-4 font-medium text-black duration-300 ease-in-out hover:bg-[#FF730F] 
-                             ${pathName.includes(menuItem.id) && "bg-[#FF730F]"}
+                    className={`group relative cursor-pointer flex items-center gap-2.5 rounded-sm py-4 px-4 font-medium text-black duration-300 ease-in-out hover:bg-[#FF730F] hover:rounded-r-[30px] 
+                             ${pathName.includes(menuItem.id) && "bg-[#FF730F] rounded-r-[30px]"}
                             `}
                   >
                     {menuItem.icon}

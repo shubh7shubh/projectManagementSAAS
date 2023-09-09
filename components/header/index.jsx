@@ -7,7 +7,7 @@ import { useContext, useEffect } from "react";
 import { FaCog, FaBell, FaUser } from 'react-icons/fa';
 
 export default function Header() {
-    const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
+    // const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
 
     const router = useRouter();
 

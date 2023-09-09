@@ -4,15 +4,100 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+
+
+
+// function SearchDropdown({ options, onSelect, propertyData }) {
+//     const [searchQuery, setSearchQuery] = useState('');
+//     const [isOpen, setIsOpen] = useState(false);
+//     const [selectedOption, setSelectedOption] = useState(null);
+  
+  
+  
+//     useEffect(() => {
+//       if (propertyData) {
+//         setSearchQuery(propertyData?.location.name);
+//         setSelectedOption(null);
+//       }
+//     }, [propertyData]);
+  
+  
+//     const filteredOptions = options?.filter((option) =>
+//       option.name.toLowerCase().includes(searchQuery.toLowerCase())
+//     );
+  
+//     const handleSearchChange = (e) => {
+//       setSearchQuery(e.target.value);
+//       setSelectedOption(null);
+//     };
+  
+//     const handleOptionSelect = (optionName) => {
+//       onSelect(optionName);
+//       setSelectedOption(optionName);
+//       setSearchQuery('');
+//       setIsOpen(false);
+//     };
+  
+//     const placeholder = selectedOption ? selectedOption : "Search locations";
+  
+  
+//     return (
+  
+//       <div style={{ margin: "20px 0" }} className="relative">
+//         <div
+//           className={`relative z-10 ${isOpen ? "border-blue-500" : ""
+//             } transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd `}
+//         >
+//           <input
+//             style={{ borderRadius: "18px" }}
+//             type="text"
+//             className="inputField"
+//             placeholder={placeholder}
+//             value={searchQuery}
+//             onChange={handleSearchChange}
+//             onClick={() => setIsOpen(true)}
+//           />
+//         </div>
+  
+//         {isOpen && (
+//           <div className="absolute left-0 bg-white border rounded-md w-full z-20 max-h-60 overflow-y-auto">
+//             {filteredOptions.map((option) => (
+//               <div
+//                 key={option._id}
+//                 className="px-4 py-2 cursor-pointer hover:bg-blue-100"
+//                 onClick={() => handleOptionSelect(option.name)}
+//               >
+//                 {option.name}
+//               </div>
+//             ))}
+//           </div>
+//         )}
+//       </div>
+  
+//     );
+//   }
+
+
+
+
 
 const ProjectModal = ({ buttonText, modalTitle, onSubmit }) => {
     const [open, setOpen] = useState(false);
+    // const theme = useTheme();
+    const [status, setStatus] = useState('');
     const [projectData, setProjectData] = useState({
         projectName: '',
         status: '',
         clientEmail: '',
         startDate: '',
         endDate: '',
+        projectCompany: '',
+        projectCategory: '',
     });
 
     const handleOpen = () => {
@@ -41,10 +126,41 @@ const ProjectModal = ({ buttonText, modalTitle, onSubmit }) => {
         outline: 'none', // Remove default focus outline
     };
 
+    // MUI DropDown
+
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+            },
+        },
+    };
+
+    const names = [
+        'Completed',
+        "Ongoing",
+        "Onhold",
+        "Pending",
+    ];
+
+
+
+    const handleChange = (event) => {
+        setStatus(event.target.value);
+    };
+
+
     return (
         <>
             {/* <p></p> */}
-            <Button sx={{color:"black",borderRadius:"10px",padding:"7px 15px" }} className="bg-[#FF730F] text-white hover:bg-[#db8e57]" onClick={handleOpen}>{buttonText}</Button>
+            <Button sx={{
+                color: "white", borderRadius: "10px", padding: "7px 15px", backgroundColor: "#FF730F", "&:hover": {
+                    backgroundColor: '#db8e57'
+                },
+            }} className="bg-[#FF730F] text-white hover:bg-[#db8e57]" onClick={handleOpen}>{buttonText}</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -66,20 +182,59 @@ const ProjectModal = ({ buttonText, modalTitle, onSubmit }) => {
                                 setProjectData({ ...projectData, projectName: e.target.value })
                             }
                         />
+                        {/* <div>
+                            <SearchDropdown propertyData={propertyData} options={loc?.result} onSelect={handleLocationSelect} />
+                        </div> */}
+
+
+                        <div>
+                            <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={status}
+                                        label="Status"
+                                        onChange={handleChange}
+                                    >
+                                        {names.map((name) => (
+                                            <MenuItem
+                                                key={name}
+                                                value={name}
+                                            // style={getStyles(name, personName, theme)}
+                                            >
+                                                {name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        </div>
+
+                        <div>
+                            <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
+                        
+                            </Box>
+                        </div>
+
+
+                
+                    
                         <TextField
-                            label="Status"
+                            label="Project Category"
                             fullWidth
                             margin="normal"
-                            value={projectData.status}
+                            value={projectData.projectCategory}
                             onChange={(e) =>
-                                setProjectData({ ...projectData, status: e.target.value })
+                                setProjectData({ ...projectData, clientEmail: e.target.value })
                             }
                         />
                         <TextField
-                            label="Client Email"
+                            label="Project Company"
                             fullWidth
                             margin="normal"
-                            value={projectData.clientEmail}
+                            value={projectData.projectCompany}
                             onChange={(e) =>
                                 setProjectData({ ...projectData, clientEmail: e.target.value })
                             }

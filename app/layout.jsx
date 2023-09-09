@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <GlobalState>
+        {/* <GlobalState> */}
         <div className='flex h-screen overflow-hidden'>
           <Sidebar />
           <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
             </main>
           </div>
         </div>
-        </GlobalState>
+        {/* </GlobalState> */}
       </body>
     </html>
   )

@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useEffect } from 'react'
 import { IconButton, Tooltip } from '@mui/material';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -10,6 +10,7 @@ import { BsPencil } from "react-icons/bs";
 import ProjectModal from '../../../components/modals/projectModal'
 // import { useRouter } from 'next/router';
 import { useRouter } from 'next/navigation'
+import { useAxios } from "../../../utills/axios"
 
 const getStatusCellStyle = (params) => {
     const status = params.value;
@@ -39,32 +40,32 @@ const getStatusCellStyle = (params) => {
 
 const columns = [
     {
-        field: "name",
+        field: "project_name",
         headerName: (
             <div className="text-[#FF730F] font-bold">Project Name</div>
         ),
         minWidth: 100,
         flex: 0.1,
     },
-    {
-        field: "status",
-        headerName: (
-            <div className="text-[#FF730F] font-bold">Status</div>
-        ),
-        minWidth: 100,
-        flex: 0.1,
-        renderCell: (params) => (
-            <div style={getStatusCellStyle(params)}>{params.value}</div>
-        ),
-    },
-    {
-        field: "clientEmail",
-        headerName: (
-            <div className="text-[#FF730F] font-bold">Client Email</div>
-        ),
-        minWidth: 100,
-        flex: 0.1,
-    },
+    // {
+    //     field: "status",
+    //     headerName: (
+    //         <div className="text-[#FF730F] font-bold">Status</div>
+    //     ),
+    //     minWidth: 100,
+    //     flex: 0.1,
+    //     renderCell: (params) => (
+    //         <div style={getStatusCellStyle(params)}>{params.value}</div>
+    //     ),
+    // },
+    // {
+    //     field: "clientEmail",
+    //     headerName: (
+    //         <div className="text-[#FF730F] font-bold">Client Email</div>
+    //     ),
+    //     minWidth: 100,
+    //     flex: 0.1,
+    // },
     {
         field: "startDate",
         headerName: (
@@ -77,6 +78,14 @@ const columns = [
         field: "endDate",
         headerName: (
             <div className="text-[#FF730F] font-bold">End Date</div>
+        ),
+        minWidth: 100,
+        flex: 0.1,
+    },
+    {
+        field: "project_company",
+        headerName: (
+            <div className="text-[#FF730F] font-bold">Project Company</div>
         ),
         minWidth: 100,
         flex: 0.1,
@@ -128,118 +137,9 @@ const columns = [
 const Projects = () => {
         const router = useRouter();
     const [pageSize, setPageSize] = useState(5)
+    const instance = useAxios();
+    const [projects, setProjects] = useState([])
 
-    const projects = [
-        {
-            "projectName": "New Website",
-            "status": "Ongoing",
-            "clientEmail": "john.doe@example.com",
-            "startDate": "2023-09-08",
-            "endDate": "2023-10-08",
-        },
-        {
-            "projectName": "Product Launch",
-            "status": "Completed",
-            "clientEmail": "jane.doe@example.com",
-            "startDate": "2023-09-09",
-            "endDate": "2023-10-09",
-        },
-        {
-            "projectName": "Marketing Campaign",
-            "status": "Onhold",
-            "clientEmail": "bill.smith@example.com",
-            "startDate": "2023-09-10",
-            "endDate": "2023-10-10",
-        },
-        {
-            "projectName": "New App Development",
-            "status": "Ongoing",
-            "clientEmail": "mary.jones@example.com",
-            "startDate": "2023-09-11",
-            "endDate": "2023-10-11",
-        },
-        {
-            "projectName": "Data Migration",
-            "status": "Completed",
-            "clientEmail": "tom.brown@example.com",
-            "startDate": "2023-09-12",
-            "endDate": "2023-10-12",
-        },
-        {
-            "projectName": "System Upgrade",
-            "status": "Onhold",
-            "clientEmail": "sally.white@example.com",
-            "startDate": "2023-09-13",
-            "endDate": "2023-10-13",
-        },
-        {
-            "projectName": "New Feature Development",
-            "status": "Ongoing",
-            "clientEmail": "david.green@example.com",
-            "startDate": "2023-09-14",
-            "endDate": "2023-10-14",
-        },
-        {
-            "projectName": "Security Audit",
-            "status": "Completed",
-            "clientEmail": "michael.black@example.com",
-            "startDate": "2023-09-15",
-            "endDate": "2023-10-15",
-        },
-        {
-            "projectName": "Training Program",
-            "status": "Onhold",
-            "clientEmail": "jenny.pink@example.com",
-            "startDate": "2023-09-16",
-            "endDate": "2023-10-16",
-        },
-        {
-            "projectName": "IT Support",
-            "status": "Onhold",
-            "clientEmail": "frank.blue@example.com",
-            "startDate": "2023-09-17",
-            "endDate": "2023-10-17",
-        },
-        {
-            "projectName": "New Feature Development",
-            "status": "Ongoing",
-            "clientEmail": "david.green@example.com",
-            "startDate": "2023-09-14",
-            "endDate": "2023-10-14",
-        },
-        {
-            "projectName": "Security Audit",
-            "status": "Completed",
-            "clientEmail": "michael.black@example.com",
-            "startDate": "2023-09-15",
-            "endDate": "2023-10-15",
-        },
-        {
-            "projectName": "Training Program",
-            "status": "Onhold",
-            "clientEmail": "jenny.pink@example.com",
-            "startDate": "2023-09-16",
-            "endDate": "2023-10-16",
-        },
-        {
-            "projectName": "IT Support",
-            "status": "Onhold",
-            "clientEmail": "frank.blue@example.com",
-            "startDate": "2023-09-17",
-            "endDate": "2023-10-17",
-        },
-    ];
-
-    const newProjects = projects.map((project, index) => ({
-        id: index + 1,
-        name: project.projectName,
-        status: project.status,
-        clientEmail: project.clientEmail,
-        startDate: project.startDate,
-        endDate: project.endDate,
-    }));
-
-    const [rowProjects, setRowProjects] = useState(newProjects)
 
     const projectSubmit = (project) => {
         console.log(project, "projectDetails")
@@ -250,6 +150,32 @@ const Projects = () => {
         console.log(row, "rowwww")
         router.push(`/admin/projects/${row.id}`);
     };
+
+
+    async function getAllProjects() {
+        try {
+
+          const res = await instance.get(
+            `/project/allprojects/admin`
+          );
+          if (res.data.ProjectList) {
+            // setUsers(res?.data?.data);
+            // setLoading(false);
+            setProjects(res.data.ProjectList)
+            console.log(res.data,"eeeeeee")
+          }
+
+        } catch (e) {
+        //   setLoading(false);
+          console.log(e)
+
+        }
+      }
+    
+      useEffect(() => {
+        getAllProjects();
+      }, []);
+
 
     return (
         <div>
@@ -271,8 +197,9 @@ const Projects = () => {
             <div className='mt-4'>
                 <Box>
                     <DataGrid
-                        rows={rowProjects}
+                        rows={projects}
                         columns={columns}
+                        getRowId={(row) => row._id}
                         pageSizeOptions={[5, 10, 15, 100]}
                         pageSize={pageSize}
                         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
