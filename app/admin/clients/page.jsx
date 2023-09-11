@@ -8,41 +8,68 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { useAxios } from '../../../utills/axios';
+import { toast } from 'react-toastify';
 
 const page = () => {
+    const instance = useAxios();
     const [clientData, setClientData] = useState({
 
         clientName: '',
         clientEmail: '',
-        clientMobileNo:'',
+        phoneNum: '',
 
     });
 
-    const handleSubmit = () => {
-  
+    const handleSubmit = async () => {
+    try {
+        const res = await instance.post("/client/addclient/admin", clientData)
+
+        if (res.success === true) {
+            toast.success('Success Notification !', {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+            console.log(res.data,"reeeeeeee")
+        }
+
+        setClientData({
+
+            clientName: '',
+            clientEmail: '',
+            phoneNum: '',
+    
+        })
+
+        
+    } catch (error) {
+        console.log(error)
+    }
+
+
     };
-  return (
-    <Box sx={{maxWidth:"50%", margin:"0 auto"}}>
-    <Typography id="modal-modal-title" variant="h6" component="h2">
-       Create a Client
-    </Typography>
-    <form>
-        {/* Add margin-bottom to separate form fields */}
-        <TextField
-            label="Client Name"
-            fullWidth
-            margin="normal"
-            value={clientData.clientName}
-            onChange={(e) =>
-                setClientData({ ...clientData, clientName: e.target.value })
-            }
-        />
-        {/* <div>
+    return (
+        <div className='mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10'> 
+        <Box sx={{ maxWidth: "50%", margin: "0 auto" }}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+                Create a Client
+            </Typography>
+            <form>
+                {/* Add margin-bottom to separate form fields */}
+                <TextField
+                    label="Client Name"
+                    fullWidth
+                    margin="normal"
+                    value={clientData.clientName}
+                    onChange={(e) =>
+                        setClientData({ ...clientData, clientName: e.target.value })
+                    }
+                />
+                {/* <div>
             <SearchDropdown propertyData={propertyData} options={loc?.result} onSelect={handleLocationSelect} />
         </div> */}
 
 
-        {/* <div>
+                {/* <div>
             <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
                 <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">Status</InputLabel>
@@ -66,7 +93,7 @@ const page = () => {
                 </FormControl>
             </Box>
         </div> */}
-{/* 
+                {/* 
         <div>
             <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
         
@@ -75,26 +102,26 @@ const page = () => {
 
 
 
-    
-        <TextField
-            label="Client Email"
-            fullWidth
-            margin="normal"
-            value={clientData.clientEmail}
-            onChange={(e) =>
-                setClientData({ ...clientData, clientEmail: e.target.value })
-            }
-        />
-        <TextField
-            label="Client Mobile Number"
-            fullWidth
-            margin="normal"
-            value={clientData.clientMobileNo}
-            onChange={(e) =>
-                setClientData({ ...clientData, clientMobileNo: e.target.value })
-            }
-        />
-        {/* <TextField
+
+                <TextField
+                    label="Client Email"
+                    fullWidth
+                    margin="normal"
+                    value={clientData.clientEmail}
+                    onChange={(e) =>
+                        setClientData({ ...clientData, clientEmail: e.target.value })
+                    }
+                />
+                <TextField
+                    label="Client Mobile Number"
+                    fullWidth
+                    margin="normal"
+                    value={clientData.phoneNum}
+                    onChange={(e) =>
+                        setClientData({ ...clientData, phoneNum: e.target.value })
+                    }
+                />
+                {/* <TextField
             label="Start Date"
             fullWidth
             margin="normal"
@@ -103,7 +130,7 @@ const page = () => {
                 setClientData({ ...clientData, startDate: e.target.value })
             }
         /> */}
-        {/* <TextField
+                {/* <TextField
             label="End Date"
             fullWidth
             margin="normal"
@@ -112,25 +139,26 @@ const page = () => {
                 setClientData({ ...clientData, endDate: e.target.value })
             }
         /> */}
-        {/* Add margin-top to separate form fields and button */}
-        <Button
-            variant="contained"
-            onClick={handleSubmit}
-            sx={{
-                marginTop: 2,
-                backgroundColor: '#FF730F', // Set the background color
-                '&:hover': {
-                    backgroundColor: '#db8e57', // Set the hover background color
-                },
-                color: 'white', // Set the text color
-            }}
-            className="bg-[#FF730F] text-white hover:bg-[#db8e57]"
-        >
-            Submit
-        </Button>
-    </form>
-</Box>
-  )
+                {/* Add margin-top to separate form fields and button */}
+                <Button
+                    variant="contained"
+                    onClick={handleSubmit}
+                    sx={{
+                        marginTop: 2,
+                        backgroundColor: '#FF730F', // Set the background color
+                        '&:hover': {
+                            backgroundColor: '#db8e57', // Set the hover background color
+                        },
+                        color: 'white', // Set the text color
+                    }}
+                    className="bg-[#FF730F] text-white hover:bg-[#db8e57]"
+                >
+                    Submit
+                </Button>
+            </form>
+        </Box>
+        </div>
+    )
 }
 
 export default page

@@ -8,3 +8,30 @@
   Note: The styles for this gradient grid background is heavily inspired by the creator of this amazing site (https://dub.sh) – all credits go to them! 
 */
 
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 8px;
+}
+
+/* ::-webkit-scrollbar-thumb {
+  @apply bg-rose-900 rounded-xl;
+}
+
+.task > ::-webkit-scrollbar-thumb {
+  @apply bg-sky-500 rounded-xl;
+} */
+/* Styling for the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: rgb(101, 31, 31); /* Replace with your desired background color */
+  border-radius: 8px; /* Adjust the border-radius as needed */
+}
+
+/* Styling for the scrollbar thumb within elements with the "task" class */
+.task::-webkit-scrollbar-thumb {
+  background-color: rgb(36, 36, 95); /* Replace with your desired background color */
+  border-radius: 8px; /* Adjust the border-radius as needed */
+}

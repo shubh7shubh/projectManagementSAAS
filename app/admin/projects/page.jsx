@@ -47,25 +47,25 @@ const columns = [
         minWidth: 100,
         flex: 0.1,
     },
-    // {
-    //     field: "status",
-    //     headerName: (
-    //         <div className="text-[#FF730F] font-bold">Status</div>
-    //     ),
-    //     minWidth: 100,
-    //     flex: 0.1,
-    //     renderCell: (params) => (
-    //         <div style={getStatusCellStyle(params)}>{params.value}</div>
-    //     ),
-    // },
-    // {
-    //     field: "clientEmail",
-    //     headerName: (
-    //         <div className="text-[#FF730F] font-bold">Client Email</div>
-    //     ),
-    //     minWidth: 100,
-    //     flex: 0.1,
-    // },
+    {
+        field: "status",
+        headerName: (
+            <div className="text-[#FF730F] font-bold">Status</div>
+        ),
+        minWidth: 100,
+        flex: 0.1,
+        renderCell: (params) => (
+            <div style={getStatusCellStyle(params)}>{params.value}</div>
+        ),
+    },
+    {
+        field: "clientEmail",
+        headerName: (
+            <div className="text-[#FF730F] font-bold">Client Email</div>
+        ),
+        minWidth: 100,
+        flex: 0.1,
+    },
     {
         field: "startDate",
         headerName: (
@@ -82,14 +82,14 @@ const columns = [
         minWidth: 100,
         flex: 0.1,
     },
-    {
-        field: "project_company",
-        headerName: (
-            <div className="text-[#FF730F] font-bold">Project Company</div>
-        ),
-        minWidth: 100,
-        flex: 0.1,
-    },
+    // {
+    //     field: "project_company",
+    //     headerName: (
+    //         <div className="text-[#FF730F] font-bold">Project Company</div>
+    //     ),
+    //     minWidth: 100,
+    //     flex: 0.1,
+    // },
     {
         field: "action",
         headerName: (
@@ -104,7 +104,7 @@ const columns = [
                         //   onClick={() => router.push(`/admin/property/edit/${row._id}`)}
                         //   onClick={() => console.log("click")}
                         onClick={(e) => {
-                            e.stopPropagation(); 
+                            e.stopPropagation();
                             console.log("click")
                         }}
                         color="primary"
@@ -121,7 +121,7 @@ const columns = [
                         // onClick={() => console.log("click")}
                         onClick={(e) => {
                             e.stopPropagation();
-                            console.log("click") 
+                            console.log("click")
                         }}
                         color="error"
                     >
@@ -134,11 +134,16 @@ const columns = [
 ];
 
 
+
+
+
+
 const Projects = () => {
-        const router = useRouter();
+    const router = useRouter();
     const [pageSize, setPageSize] = useState(5)
     const instance = useAxios();
     const [projects, setProjects] = useState([])
+    const [clients, setClients] = useState([])
 
 
     const projectSubmit = (project) => {
@@ -155,30 +160,57 @@ const Projects = () => {
     async function getAllProjects() {
         try {
 
-          const res = await instance.get(
-            `/project/allprojects/admin`
-          );
-          if (res.data.ProjectList) {
-            // setUsers(res?.data?.data);
-            // setLoading(false);
-            setProjects(res.data.ProjectList)
-            console.log(res.data,"eeeeeee")
-          }
+            const res = await instance.get(
+                `/project/allprojects/admin`
+            );
+            if (res.data.ProjectList) {
+                // setUsers(res?.data?.data);
+                // setLoading(false);
+                setProjects(res.data.ProjectList)
+                console.log(res.data, "eeeeeee")
+            }
 
         } catch (e) {
-        //   setLoading(false);
-          console.log(e)
+            //   setLoading(false);
+            console.log(e)
 
         }
-      }
-    
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         getAllProjects();
-      }, []);
+    }, []);
 
 
+
+    // GEt All Clents
+
+
+    const getAllClients = async () => {
+
+        try {
+
+            const res = await instance.get("/client/allclientlist/admin")
+
+            if (res.data.sucess) { // Access res.data.success
+                console.log(res.data.TaskList, "task"); // Access res.data.TaskList
+                setClients(res.data.TaskList)
+            }
+
+        } catch (error) {
+
+            console.log(error)
+
+        }
+    }
+
+    useEffect(() => {
+
+        getAllClients()
+
+    }, [])
     return (
-        <div>
+       <div className='mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10'> 
             <div className='flex items-center justify-between'>
                 <div className="relative w-28 h-9 bg-[#FF730F] transform -skew-x-12 flex items-center justify-center">
                     <p className="text-white  px-4">Projects</p>
@@ -204,7 +236,7 @@ const Projects = () => {
                         pageSize={pageSize}
                         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                         checkboxSelection={false}
-                        onRowClick={(params) => handleRowClick(params.row)} 
+                        onRowClick={(params) => handleRowClick(params.row)}
 
                     />
                 </Box>

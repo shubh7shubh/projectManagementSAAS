@@ -51,6 +51,12 @@ const menuItems = [
     path: "/",
     icon: <LuContact size={25} />,
   },
+  {
+    id: "task",
+    label: "Task",
+    path: "/admin/task",
+    icon: <LiaFileInvoiceSolid size={25} />,
+  },
 ];
 
 export default function Sidebar() {

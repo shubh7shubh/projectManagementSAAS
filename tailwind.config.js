@@ -220,6 +220,8 @@ module.exports = {
       satoshi: ['Satoshi', 'sans-serif'],
     },
     colors: {
+      "mainBackgroundColor": '#0D1117',
+      "columnBackgroundColor": '#161C22',
       current: 'currentColor',
       transparent: 'transparent',
       white: '#FFFFFF',

@@ -27,7 +27,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "icons/TrashIcon.jsx", "icons/PlusIcon.jsx", "components/kanbanBoard/TaskCard.jsx", "components/kanbanBoard/KanbanBoard.jsx", "components/kanbanBoard/ColumnContainer.jsx"  ],
   "exclude": [
     "node_modules"
   ]

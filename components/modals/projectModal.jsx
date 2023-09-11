@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+"use client"
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -8,6 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { useAxios } from '../../utills/axios';
 
 
 
@@ -16,38 +18,38 @@ import Select from '@mui/material/Select';
 //     const [searchQuery, setSearchQuery] = useState('');
 //     const [isOpen, setIsOpen] = useState(false);
 //     const [selectedOption, setSelectedOption] = useState(null);
-  
-  
-  
+
+
+
 //     useEffect(() => {
 //       if (propertyData) {
 //         setSearchQuery(propertyData?.location.name);
 //         setSelectedOption(null);
 //       }
 //     }, [propertyData]);
-  
-  
+
+
 //     const filteredOptions = options?.filter((option) =>
 //       option.name.toLowerCase().includes(searchQuery.toLowerCase())
 //     );
-  
+
 //     const handleSearchChange = (e) => {
 //       setSearchQuery(e.target.value);
 //       setSelectedOption(null);
 //     };
-  
+
 //     const handleOptionSelect = (optionName) => {
 //       onSelect(optionName);
 //       setSelectedOption(optionName);
 //       setSearchQuery('');
 //       setIsOpen(false);
 //     };
-  
+
 //     const placeholder = selectedOption ? selectedOption : "Search locations";
-  
-  
+
+
 //     return (
-  
+
 //       <div style={{ margin: "20px 0" }} className="relative">
 //         <div
 //           className={`relative z-10 ${isOpen ? "border-blue-500" : ""
@@ -63,7 +65,7 @@ import Select from '@mui/material/Select';
 //             onClick={() => setIsOpen(true)}
 //           />
 //         </div>
-  
+
 //         {isOpen && (
 //           <div className="absolute left-0 bg-white border rounded-md w-full z-20 max-h-60 overflow-y-auto">
 //             {filteredOptions.map((option) => (
@@ -78,7 +80,7 @@ import Select from '@mui/material/Select';
 //           </div>
 //         )}
 //       </div>
-  
+
 //     );
 //   }
 
@@ -87,9 +89,13 @@ import Select from '@mui/material/Select';
 
 
 const ProjectModal = ({ buttonText, modalTitle, onSubmit }) => {
+    const instance = useAxios();
     const [open, setOpen] = useState(false);
     // const theme = useTheme();
     const [status, setStatus] = useState('');
+    const [selectedClient, setSelectedClient] = useState('');
+    const [clients, setClients] = useState(null)
+    const [clientNames, setClientNames] = useState([]);
     const [projectData, setProjectData] = useState({
         projectName: '',
         status: '',
@@ -108,9 +114,21 @@ const ProjectModal = ({ buttonText, modalTitle, onSubmit }) => {
         setOpen(false);
     };
 
-    const handleSubmit = () => {
-        onSubmit(projectData);
-        setOpen(false);
+    const handleSubmit = async () => {
+        // onSubmit(projectData);
+        // setOpen(false);
+        try {
+
+            const res = await instance.post("/project/addProject/admin", projectData);
+
+            if (res.data) {
+                console.log(res.data)
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+
     };
 
     const style = {
@@ -147,11 +165,65 @@ const ProjectModal = ({ buttonText, modalTitle, onSubmit }) => {
     ];
 
 
+    // const clientNames = [
+    //     'Completed',
+    //     "Ongoing",
+    //     "Onhold",
+    //     "Pending",
+    // ];
+
+
 
     const handleChange = (event) => {
+        console.log(event.target.value, "clieee")
+
         setStatus(event.target.value);
+        setProjectData({
+            ...projectData,
+            status: event.target.value
+        });
     };
 
+
+
+    // Get all Clients
+    const getAllClients = async () => {
+        try {
+            const res = await instance.get("/client/allclientlist/admin");
+
+            if (res.data.TaskList) {
+                setClients(res?.data?.TaskList);
+
+                console.log(res.data.TaskList, "task")
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+    useEffect(() => {
+        console.log("API call started");
+        getAllClients(); // Make the API call
+    }, []);
+
+
+
+    const handleClient = (event) => {
+        console.log(event.target.value, "clieee")
+        setSelectedClient(event.target.value)
+        setProjectData({
+            ...projectData,
+            clientEmail: event.target.value.clientEmail
+        });
+    };
+
+
+
+
+    if (projectData) {
+        console.log(projectData, "project")
+    }
 
     return (
         <>
@@ -212,22 +284,72 @@ const ProjectModal = ({ buttonText, modalTitle, onSubmit }) => {
                             </Box>
                         </div>
 
+
                         <div>
                             <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
-                        
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Client</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={selectedClient}
+                                        label="Client"
+                                        onChange={handleClient}
+                                    >
+                                        {clients && clients.map((client) => (
+                                            <MenuItem
+                                                key={client._id}
+                                                value={client}
+                                            >
+                                                {client.clientName}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        </div>
+
+                        {/* <div>
+                            <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Client</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={clients}
+                                        label="Client"
+                                        onChange={handleClient}
+                                    >
+                                        { clients && clients.map((name) => (
+                                            <MenuItem
+                                                key={name?.clientName}
+                                                value={name?.clientName}
+                                            // style={getStyles(name, personName, theme)}
+                                            >
+                                                {name?.clientName}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        </div> */}
+
+                        <div>
+                            <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
+
                             </Box>
                         </div>
 
 
-                
-                    
+
+
                         <TextField
                             label="Project Category"
                             fullWidth
                             margin="normal"
                             value={projectData.projectCategory}
                             onChange={(e) =>
-                                setProjectData({ ...projectData, clientEmail: e.target.value })
+                                setProjectData({ ...projectData, projectCategory: e.target.value })
                             }
                         />
                         <TextField
@@ -236,7 +358,7 @@ const ProjectModal = ({ buttonText, modalTitle, onSubmit }) => {
                             margin="normal"
                             value={projectData.projectCompany}
                             onChange={(e) =>
-                                setProjectData({ ...projectData, clientEmail: e.target.value })
+                                setProjectData({ ...projectData, projectCompany: e.target.value })
                             }
                         />
                         <TextField
