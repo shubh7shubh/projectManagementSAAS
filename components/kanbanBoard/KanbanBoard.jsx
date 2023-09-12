@@ -11,100 +11,84 @@ import {
   DragOverlay,
   DragStartEvent,
   PointerSensor,
+  useDndContext,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "../kanbanBoard/TaskCard";
+import { useAxios } from "../../utills/axios"
 
 const defaultCols = [
   {
-    id: "todo",
-    title: "Todo",
+    id: "onHold",
+    title: "ON HOLD",
   },
   {
-    id: "doing",
-    title: "Work in progress",
+    id: "onGoing",
+    title: "ON GOING",
   },
   {
-    id: "done",
-    title: "Done",
+    id: "completed",
+    title: "COMPLETED",
   },
 ];
 
-const defaultTasks  = [
+const defaultTasks = [
   {
     id: "1",
-    columnId: "todo",
+    columnId: "onHold",
     content: "List admin APIs for dashboard",
   },
   {
     id: "2",
-    columnId: "todo",
+    columnId: "onGoing",
     content:
       "Develop user registration functionality with OTP delivered on SMS after email confirmation and phone number confirmation",
   },
   {
     id: "3",
-    columnId: "doing",
+    columnId: "onGoing",
     content: "Conduct security testing",
   },
   {
     id: "4",
-    columnId: "doing",
+    columnId: "onGoing",
     content: "Analyze competitors",
   },
   {
     id: "5",
-    columnId: "done",
+    columnId: "completed",
     content: "Create UI kit documentation",
   },
   {
     id: "6",
-    columnId: "done",
+    columnId: "completed",
     content: "Dev meeting",
   },
   {
     id: "7",
-    columnId: "done",
+    columnId: "completed",
     content: "Deliver dashboard prototype",
   },
   {
     id: "8",
-    columnId: "todo",
+    columnId: "onHold",
     content: "Optimize application performance",
   },
   {
     id: "9",
-    columnId: "todo",
+    columnId: "onHold",
     content: "Implement data validation",
   },
-  {
-    id: "10",
-    columnId: "todo",
-    content: "Design database schema",
-  },
-  {
-    id: "11",
-    columnId: "todo",
-    content: "Integrate SSL web certificates into workflow",
-  },
-  {
-    id: "12",
-    columnId: "doing",
-    content: "Implement error logging and monitoring",
-  },
-  {
-    id: "13",
-    columnId: "doing",
-    content: "Design and implement responsive UI",
-  },
+
 ];
 
 
 
 function KanbanBoard() {
+  const instance = useAxios();
   const [columns, setColumns] = useState(defaultCols);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
@@ -113,6 +97,12 @@ function KanbanBoard() {
   const [activeColumn, setActiveColumn] = useState(null);
 
   const [activeTask, setActiveTask] = useState(null);
+
+  const [dragOnTask, setDragOnTask] = useState(false)
+
+  const [dragOnColumn, setDragOnColumn] = useState(false)
+
+  const [previousStatus, setPreviousStatus] = useState("onHold")
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -126,7 +116,7 @@ function KanbanBoard() {
     // This code will run on the client side after the component is mounted.
     const portalContainer = document.createElement('div');
     document.body.appendChild(portalContainer);
-  
+
     return () => {
       // Attempt to remove portalContainer, but handle any errors
       try {
@@ -138,10 +128,35 @@ function KanbanBoard() {
   }, []);
 
   useEffect(() => {
-console.log(tasks,"takss")
+    console.log(tasks, "takss")
   }, [tasks])
+
+
+  async function updateTaskStatus(task) {
+    // const instance = useAxios();
+    console.log(task,"rtert")
+    try {
+      if (task) {
+        const { id, columnId } = task;
+        setPreviousStatus(columnId)
+        console.log(`Updating task ${id} status to ${columnId}`);
   
-  
+        // Check if the task's columnId has changed
+        // if (previousStatus !== columnId) {
+          // Make the API request to update the task status
+          const res = await instance.post(`/admin/projects/${id}`, {
+            id: columnId
+          });
+          
+          if (res.data) {
+            console.log(res.data, "resss");
+          }
+        // }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
 
   return (
@@ -182,7 +197,7 @@ console.log(tasks,"takss")
               ))}
             </SortableContext>
           </div>
-          <button
+          {/* <button
             onClick={() => {
               createNewColumn();
             }}
@@ -204,7 +219,7 @@ console.log(tasks,"takss")
           >
           <PlusIcon /> 
             Add Column
-          </button>
+          </button> */}
         </div>
 
         {createPortal(
@@ -252,6 +267,7 @@ console.log(tasks,"takss")
   }
 
   function updateTask(id, content) {
+    console.log(id, content, "content")
     const newTasks = tasks.map((task) => {
       if (task.id !== id) return task;
       return { ...task, content };
@@ -260,14 +276,14 @@ console.log(tasks,"takss")
     setTasks(newTasks);
   }
 
-  function createNewColumn() {
-    const columnToAdd = {
-      id: generateId(),
-      title: `Column ${columns.length + 1}`,
-    };
+  // function createNewColumn() {
+  //   const columnToAdd = {
+  //     id: generateId(),
+  //     title: `Column ${columns.length + 1}`,
+  //   };
 
-    setColumns([...columns, columnToAdd]);
-  }
+  //   setColumns([...columns, columnToAdd]);
+  // }
 
   function deleteColumn(id) {
     const filteredColumns = columns.filter((col) => col.id !== id);
@@ -287,6 +303,7 @@ console.log(tasks,"takss")
   }
 
   function onDragStart(event) {
+    console.log("1")
     if (event.active.data.current?.type === "Column") {
       setActiveColumn(event.active.data.current.column);
       return;
@@ -299,6 +316,7 @@ console.log(tasks,"takss")
   }
 
   function onDragEnd(event) {
+    console.log("2")
     setActiveColumn(null);
     setActiveTask(null);
 
@@ -316,6 +334,7 @@ console.log(tasks,"takss")
     console.log("DRAG END");
 
     setColumns((columns) => {
+      console.log("3")
       const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
 
       const overColumnIndex = columns.findIndex((col) => col.id === overId);
@@ -324,7 +343,17 @@ console.log(tasks,"takss")
     });
   }
 
+
+
+
+
   function onDragOver(event) {
+    console.log("4")
+
+    // let shouldUpdateTaskStatus = false;
+    // let shouldUpdateColumnStatus = false;
+    // updateTaskStatus(event.active.data.current?.task)
+
     const { active, over } = event;
     if (!over) return;
 
@@ -340,6 +369,8 @@ console.log(tasks,"takss")
 
     // Im dropping a Task over another Task
     if (isActiveATask && isOverATask) {
+      setDragOnTask(true)
+      console.log("5")
       setTasks((tasks) => {
         const activeIndex = tasks.findIndex((t) => t.id === activeId);
         const overIndex = tasks.findIndex((t) => t.id === overId);
@@ -349,7 +380,9 @@ console.log(tasks,"takss")
           tasks[activeIndex].columnId = tasks[overIndex].columnId;
           return arrayMove(tasks, activeIndex, overIndex - 1);
         }
-
+        // shouldUpdateTaskStatus = true;
+        console.log("DROPPING TASK OVER TASK");
+       
         return arrayMove(tasks, activeIndex, overIndex);
       });
     }
@@ -358,15 +391,26 @@ console.log(tasks,"takss")
 
     // Im dropping a Task over a column
     if (isActiveATask && isOverAColumn) {
+      setDragOnColumn(true)
+      // updateTaskStatus(event.active.data.current?.task);
+      console.log("6")
       setTasks((tasks) => {
         const activeIndex = tasks.findIndex((t) => t.id === activeId);
 
         tasks[activeIndex].columnId = overId;
+    
         console.log("DROPPING TASK OVER COLUMN", { activeIndex });
         return arrayMove(tasks, activeIndex, activeIndex);
+       
       });
     }
+
+    if (dragOnColumn || dragOnColumn && dragOnTask ) {
+      console.log("Start")
+      updateTaskStatus(event.active.data.current?.task);
+    }
   }
+
 }
 
 function generateId() {
@@ -374,4 +418,10 @@ function generateId() {
   return Math.floor(Math.random() * 10001);
 }
 
+
+
+
+
+
 export default KanbanBoard;
+

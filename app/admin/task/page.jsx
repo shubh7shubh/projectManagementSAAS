@@ -34,6 +34,7 @@ function YourPage() {
   return (
     // <div style={{border:"2px solid green",backgroundColor:"black",color:"white"}}>
     <div style={{color:"white",backgroundColor:"black"}}>
+      {/* Task */}
       {/* Other page content */}
       <DynamicKanbanBoard />
     </div>

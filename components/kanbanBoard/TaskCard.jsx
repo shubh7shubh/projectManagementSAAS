@@ -66,9 +66,10 @@ function TaskCard({ task, deleteTask, updateTask }) {
         <textarea
           className="
         h-[90%]
-        w-full resize-none border-none rounded bg-transparent text-white focus:outline-none
+        w-full resize-none border-none rounded bg-transparent text-white focus:outline-none 
         "
           value={task.content}
+          readOnly
           autoFocus
           placeholder="Task content here"
           onBlur={toggleEditMode}
@@ -77,7 +78,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
               toggleEditMode();
             }
           }}
-          onChange={(e) => updateTask(task.id, e.target.value)}
+          // onChange={(e) => updateTask(task.id, e.target.value)}
         />
       </div>
     );
@@ -102,7 +103,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
         {task.content}
       </p>
 
-      {mouseIsOver && (
+      {/* {mouseIsOver && (
         <button
           onClick={() => {
             deleteTask(task.id);
@@ -111,7 +112,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
         >
           <TrashIcon />
         </button>
-      )}
+      )} */}
     </div>
   );
 }
