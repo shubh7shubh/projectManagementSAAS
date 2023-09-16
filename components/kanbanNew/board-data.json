@@ -1,0 +1,44 @@
+[
+    {
+        "name":"onHold",
+        "items": [
+            {
+                "id":1,
+                "title": "Company website redesign."
+  
+            },
+            {
+                "id":2,
+                "title": "Mobile app login process prototype."
+
+            },
+            {
+                "id":10,
+                "title": "Mobile app login processdhsajkfhdakjsfdsjda jhdsjhfjsdk prototype."
+
+            }
+        ]
+    },
+    {
+        "name":"onGoing",
+        "items": [
+            {
+                "id":3,
+                "title": "Research and strategy for upcoming project."
+            }
+        ]
+    },
+    {
+        "name":"completed",
+        "items": [
+            {
+                "id":4,
+                "title": "Dashboard layout redesign."
+            },
+            {
+                "id":5,
+                "title": "Social media posts"
+            }
+        ]
+    }
+]

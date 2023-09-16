@@ -8,6 +8,8 @@ import { Inter } from 'next/font/google'
 import Header from '../components/header'
 import Sidebar from '../components/sidebar'
 import GlobalState from '../components/context'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,6 +35,7 @@ export default function RootLayout({ children }) {
             </main>
           </div>
         </div>
+        <ToastContainer/>
         {/* </GlobalState> */}
       </body>
     </html>

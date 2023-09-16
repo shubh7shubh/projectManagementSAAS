@@ -19,13 +19,13 @@ export default function Header() {
                 <p><span >Welcome,</span> Admin</p>
 
                 <div className="flex gap-2">
-                    <div style={{border:"1px solid #FF730F"}} className="w-12 bg-[#EEF2FB] h-12 bg-blue-500 rounded-full flex items-center justify-center ">
+                    <div style={{border:"1px solid #FF730F"}} className="w-12 bg-[#EEF2FB] h-12  rounded-full flex items-center justify-center ">
                         <div className="text-[#FF730F] text-xl  "><FaCog /></div>
                     </div>
-                    <div style={{border:"1px solid #FF730F"}} className="w-12 bg-[#EEF2FB] h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                    <div style={{border:"1px solid #FF730F"}} className="w-12 bg-[#EEF2FB] h-12  rounded-full flex items-center justify-center">
                         <div className="text-[#FF730F] text-xl " ><FaBell /></div>
                     </div>
-                    <div style={{border:"1px solid #FF730F"}} className="w-12 bg-[#EEF2FB] h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                    <div style={{border:"1px solid #FF730F"}} className="w-12 bg-[#EEF2FB] h-12  rounded-full flex items-center justify-center">
                         <div className="text-black text-xl " ><FaUser /></div>
                     </div>
                 </div>

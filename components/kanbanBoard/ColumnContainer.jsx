@@ -93,6 +93,7 @@ function ColumnContainer({
     >
       {/* Column title */}
       <div
+   
         {...attributes}
         {...listeners}
         onClick={() => {
@@ -103,7 +104,7 @@ function ColumnContainer({
       text-md
       h-[60px]
       cursor-grab
-      rounded-md
+
       rounded-b-none
       p-3
       font-bold
@@ -112,6 +113,7 @@ function ColumnContainer({
       flex
       items-center
       justify-between
+      rounded-2xl
       "
       >
         <div  className="flex gap-2">
@@ -166,7 +168,7 @@ function ColumnContainer({
       </div>
 
       {/* Column task container */}
-      <div className="flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto">
+      <div  className="flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto">
         <SortableContext items={tasksIds}>
           {tasks.map((task) => (
             <TaskCard

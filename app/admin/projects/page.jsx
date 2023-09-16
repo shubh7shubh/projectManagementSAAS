@@ -12,18 +12,20 @@ import ProjectModal from '../../../components/modals/projectModal'
 import { useRouter } from 'next/navigation'
 import { useAxios } from "../../../utills/axios"
 
+
+
 const getStatusCellStyle = (params) => {
-    const status = params.value;
+    const status = params.value ? params.value.toLowerCase() : ''; // Convert status to lowercase if it exists
 
     let color = '';
     switch (status) {
-        case 'Completed':
+        case 'completed':
             color = 'green';
             break;
-        case 'Onhold':
+        case 'onhold':
             color = 'red';
             break;
-        case 'Ongoing':
+        case 'ongoing':
             color = 'orange';
             break;
         default:
@@ -32,11 +34,9 @@ const getStatusCellStyle = (params) => {
     }
 
     return {
-        //   backgroundColor: backgroundColor,
         color: color,
     };
 };
-
 
 const columns = [
     {
@@ -153,7 +153,7 @@ const Projects = () => {
 
     const handleRowClick = (row) => {
         console.log(row, "rowwww")
-        router.push(`/admin/projects/${row.id}`);
+        router.push(`/admin/projects/${row._id}`);
     };
 
 

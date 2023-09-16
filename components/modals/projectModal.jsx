@@ -97,13 +97,13 @@ const ProjectModal = ({ buttonText, modalTitle, onSubmit }) => {
     const [clients, setClients] = useState(null)
     const [clientNames, setClientNames] = useState([]);
     const [projectData, setProjectData] = useState({
-        projectName: '',
+        project_name: '',
         status: '',
         clientEmail: '',
         startDate: '',
         endDate: '',
-        projectCompany: '',
-        projectCategory: '',
+        project_company: '',
+        project_categories: '',
     });
 
     const handleOpen = () => {
@@ -249,9 +249,9 @@ const ProjectModal = ({ buttonText, modalTitle, onSubmit }) => {
                             label="Project Name"
                             fullWidth
                             margin="normal"
-                            value={projectData.projectName}
+                            value={projectData.project_name}
                             onChange={(e) =>
-                                setProjectData({ ...projectData, projectName: e.target.value })
+                                setProjectData({ ...projectData, project_name: e.target.value })
                             }
                         />
                         {/* <div>
@@ -347,18 +347,18 @@ const ProjectModal = ({ buttonText, modalTitle, onSubmit }) => {
                             label="Project Category"
                             fullWidth
                             margin="normal"
-                            value={projectData.projectCategory}
+                            value={projectData.project_categories}
                             onChange={(e) =>
-                                setProjectData({ ...projectData, projectCategory: e.target.value })
+                                setProjectData({ ...projectData, project_categories: e.target.value })
                             }
                         />
                         <TextField
                             label="Project Company"
                             fullWidth
                             margin="normal"
-                            value={projectData.projectCompany}
+                            value={projectData.project_company}
                             onChange={(e) =>
-                                setProjectData({ ...projectData, projectCompany: e.target.value })
+                                setProjectData({ ...projectData, project_company: e.target.value })
                             }
                         />
                         <TextField

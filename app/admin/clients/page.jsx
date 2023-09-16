@@ -131,7 +131,7 @@ const columns = [
     return (
         <div className='mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10'>
             <div className='flex justify-end gap-4'>
-                <Button
+              {clientList ?  <Button
                     variant="contained"
                     onClick={handleClientForm}
                     sx={{
@@ -142,11 +142,11 @@ const columns = [
                         },
                         color: 'white', // Set the text color
                     }}
-                    className="bg-[#FF730F] text-white hover:bg-[#db8e57]"
+                    className="bg-[#FF730F] text-white hover:bg-[#db8e57] rounded-lg"
                 >
                     Create Client
-                </Button>
-                <Button
+                </Button> : null}
+          {clientList === false ?      <Button
                     variant="contained"
                     onClick={handleClientList}
                     sx={{
@@ -157,10 +157,10 @@ const columns = [
                         },
                         color: 'white', // Set the text color
                     }}
-                    className="bg-[#FF730F] text-white hover:bg-[#db8e57]"
+                    className="bg-[#FF730F] text-white hover:bg-[#db8e57] rounded-lg"
                 >
                     Show Clients
-                </Button>
+                </Button> : null}
 
             </div>
             {clientForm ? <Box sx={{ maxWidth: "50%", margin: "0 auto" }}>

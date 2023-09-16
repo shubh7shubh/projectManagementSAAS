@@ -9,7 +9,7 @@ export const useAxios = () => {
     // baseURL: "http://localhost:8080/api",
     headers: {
     //   Authorization: `Bearer ${cookies.jwtToken}`,
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGYwMzljNjM4NTA2OWI0ZDhkYmY5OTMiLCJpYXQiOjE2OTQ0MjE1MjksImV4cCI6MTY5NDg1MzUyOX0.ZWPcrng2R5yXuwWdqX9LMEfT2gDUOGXBDVf7SeqiLKY`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGYwMzljNjM4NTA2OWI0ZDhkYmY5OTMiLCJpYXQiOjE2OTQ4NTM4NjMsImV4cCI6MTY5NTI4NTg2M30.qSfS2MAm5Ss0nUZpPbF-LXQHAgN2YRivDutYDlwexnI`,
     },
   });
   return instance;
