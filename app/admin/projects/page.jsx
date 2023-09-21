@@ -167,7 +167,7 @@ const Projects = () => {
                 // setUsers(res?.data?.data);
                 // setLoading(false);
                 setProjects(res.data.ProjectList)
-                console.log(res.data, "eeeeeee")
+                console.log(res.data.ProjectList, "eeeeeee")
             }
 
         } catch (e) {

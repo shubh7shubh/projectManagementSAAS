@@ -1,7 +1,10 @@
 "use client"
 import React from "react";
 // import Image from "next/dist/client/image";
+
+import { FaBeer } from 'react-icons/fa';
 import Image from 'next/image'
+import Chip from '@mui/material/Chip';
 // import {
 //   ChevronDownIcon,
 //   PlusIcon,
@@ -12,6 +15,7 @@ import Image from 'next/image'
 import { Draggable } from "react-beautiful-dnd";
 
 function CardItem({ data, index }) {
+  console.log(data,"nenjfn")
   return (
     <Draggable index={index} draggableId={data.id.toString()}>
       {(provided) => (
@@ -19,7 +23,7 @@ function CardItem({ data, index }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="bg-white rounded-md p-3 m-3 mt-0 last:mb-0"
+          className="bg-white rounded-md p-3 m-3 mt-0 last:mb-4"
         >
           {/* <label
             className={`bg-gradient-to-r
@@ -39,18 +43,18 @@ function CardItem({ data, index }) {
               ? "Medium Priority"
               : "High Priority"}
           </label> */}
-          <h5 className="text-md my-3 text-lg leading-6 text-black">{data.title}</h5>
+          <h5 className="text-md font-bold my-3 text-lg leading-6 text-black">{data.title}</h5>
 
           
           <div className="flex justify-between">
             <div className="flex space-x-2 items-center">
+              <span className="flex space-x-1 items-center">
+              <Chip label={ data.taskPriority} color="primary" />
+                {/* <span className="text-black">dfdhfdjhfd</span> */}
+              </span>
               {/* <span className="flex space-x-1 items-center">
-                <ChatAlt2Icon className="w-4 h-4 text-gray-500" />
-                <span>{data.chat}</span>
-              </span> */}
-              {/* <span className="flex space-x-1 items-center">
-                <PaperClipIcon className="w-4 h-4 text-gray-500" />
-                <span>{data.attachment}</span>
+                <FaBeer className="w-4 h-4 text-gray-500" />
+                <span>dhfdjskj</span>
               </span> */}
             </div>
 
@@ -79,6 +83,10 @@ function CardItem({ data, index }) {
                 </button>
               </li>
             </ul> */}
+          </div>
+
+          <div className="my-4">
+            <p className="text-black">{data.description} </p>
           </div>
         </div>
         

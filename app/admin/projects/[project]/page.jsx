@@ -22,19 +22,19 @@ const NewProject = ({ params }) => {
     const instance = useAxios();
     const router = useRouter();
     const [status, setStatus] = useState('');
+    const [priority, setPriority] = useState('');
     const [task, setTask] = useState('');
+    const [description, setDescription] = useState('');
     const [taskFromApi, setTasksFromApi] = useState([]);
     // const [kanbanTasks, setKanbanTasks] = useState([]);
 
 
-    const handleChange = (event) => {
-        setStatus(event.target.value);
-    };
-
     const handleTask = async () => {
         let data = {
             task_name: task,
-            task_status: status
+            task_status: status,
+            task_description:description,
+            task_priority:priority
         }
 
         try {
@@ -61,6 +61,10 @@ const NewProject = ({ params }) => {
         "onGoing",
         "onHold",
     ]
+    const priorityNames = [
+        "High Priority",
+        "Low Priority",
+    ]
 
 
     const getAllTasks = async () => {
@@ -85,33 +89,71 @@ const NewProject = ({ params }) => {
 
 
 
-      let resultArray = [];
+//       let resultArray = [];
 
-if (taskFromApi) {
-  const taskStatusMap = {};
+// if (taskFromApi && taskFromApi.length > 0) {
+//     console.log(taskFromApi,"kjfdkjfkd")
+//   const taskStatusMap = {};
+
+//   taskFromApi.forEach((task) => {
+//     const { task_status, _id, task_name: title, task_priority:taskPriority, task_description:description  } = task;
+
+//     if (!taskStatusMap[task_status]) {
+//       taskStatusMap[task_status] = {
+//         name: task_status,
+//         items: [],
+//       };
+//     }
+
+//     taskStatusMap[task_status].items.push({
+//       id: _id, // Use the _id from the API as the id
+//       title,
+//       description,
+//       taskPriority
+
+//     });
+//   });
+
+//   // Convert the taskStatusMap object into an array
+//   resultArray = Object.values(taskStatusMap);
+//   console.log(resultArray,"resutlAr")
+// }
+
+
+let resultArray = [];
+
+if (taskFromApi && taskFromApi.length > 0) {
+  // Prepopulate taskStatusMap with all possible statuses
+  const taskStatusMap = {
+    "completed": { name: "completed", items: [] },
+    "onGoing": { name: "onGoing", items: [] },
+    "onHold": { name: "onHold", items: [] }
+  };
 
   taskFromApi.forEach((task) => {
-    const { task_status, _id, task_name: title } = task;
+    const { task_status, _id, task_name: title, task_priority: taskPriority, task_description: description } = task;
 
-    if (!taskStatusMap[task_status]) {
-      taskStatusMap[task_status] = {
-        name: task_status,
-        items: [],
-      };
+    // Use the task_status to add the task to the correct category
+    if (taskStatusMap[task_status]) {
+      taskStatusMap[task_status].items.push({
+        id: _id,
+        title,
+        description,
+        taskPriority
+      });
     }
-
-    taskStatusMap[task_status].items.push({
-      id: _id, // Use the _id from the API as the id
-      title,
-    });
   });
 
   // Convert the taskStatusMap object into an array
   resultArray = Object.values(taskStatusMap);
 }
+else{
+    let sampleArray = [{name:"completed",items:[]},{name:"onGoing",items:[]},{name:"onHold",items:[]},]
+    resultArray = sampleArray
+}
       
     //   setKanbanTasks(resultArray)
-      console.log(resultArray,"resultArray");
+      console.log(resultArray,"resultArraydd");
       
       
       
@@ -120,10 +162,10 @@ if (taskFromApi) {
         <div>
             {/* This is a project {params.project} */}
 
-
+{/* 
             <div className="flex items-center justify-center gap-4 my-15">
-                <input value={task} onChange={(e) => setTask(e.target.value)} style={{ border: "1px solid gray", width: "500px", height: "55px", borderRadius: "5px" }} type="text" placeholder="Enter Task" className="" />
-                <Box sx={{ width: 320 }}>
+                <input value={task} onChange={(e) => setTask(e.target.value)} style={{ border: "1px solid gray", width: "200px", height: "55px", borderRadius: "5px",paddingLeft:"15px" }} type="text" placeholder="Enter Task" className="" />
+                <Box sx={{ width: 150 }}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Status</InputLabel>
                         <Select
@@ -140,6 +182,24 @@ if (taskFromApi) {
                         </Select>
                     </FormControl>
                 </Box>
+                <Box sx={{ width: 150 }}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Priority</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={priority}
+                            label="Priority"
+                            onChange={(e) => setPriority(e.target.value)}
+                        >
+                            {priorityNames.map((status) => (
+                                <MenuItem key={status} value={status}>{status}</MenuItem>
+                            ))}
+
+                        </Select>
+                    </FormControl>
+                </Box>
+                <input value={description} onChange={(e) => setDescription(e.target.value)} style={{ border: "1px solid gray", width: "400px", height: "55px", borderRadius: "5px",paddingLeft:"15px" }} type="text" placeholder="Enter Description" className="" />
 
                 <Button
                     variant="contained"
@@ -155,10 +215,10 @@ if (taskFromApi) {
                 >
                     Create Task
                 </Button>
-            </div>
+            </div> */}
 
-            <div style={{ color: "white", backgroundColor: "black", width: "90%", margin: "0 auto" }}>
-              { resultArray &&  <Home defaultTasks={resultArray}  />}
+            <div style={{ color: "white", width: "90%", margin: "0 auto" }}>
+              { resultArray &&  <Home defaultTasks={resultArray} projectId={params.project} getAllTasks={getAllTasks}  />}
             </div>
 
 

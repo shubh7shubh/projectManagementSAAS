@@ -42,7 +42,7 @@ const menuItems = [
   {
     id: "invoices",
     label: "Invoices",
-    path: "/",
+    path: "/admin/invoices",
     icon: <LiaFileInvoiceSolid size={25} />,
   },
   {
@@ -51,12 +51,12 @@ const menuItems = [
     path: "/",
     icon: <LuContact size={25} />,
   },
-  {
-    id: "task",
-    label: "Task",
-    path: "/admin/task",
-    icon: <LiaFileInvoiceSolid size={25} />,
-  },
+  // {
+  //   id: "task",
+  //   label: "Task",
+  //   path: "/admin/task",
+  //   icon: <LiaFileInvoiceSolid size={25} />,
+  // },
 ];
 
 export default function Sidebar() {
@@ -70,6 +70,7 @@ export default function Sidebar() {
     const router = useRouter();
   
     const handlenavigate = (getMenuItem) => {
+      console.log(getMenuItem,"menu")
     //   if(status === 'unauthenticated') {
     //     router.push('/unauth-page')
     //     return
