@@ -11,10 +11,12 @@ import Select from '@mui/material/Select';
 import { useAxios } from '../../../utills/axios';
 import { toast } from 'react-toastify';
 import { DataGrid } from '@mui/x-data-grid';
+import Loading from '../../../components/loader';
 
 const page = () => {
     const instance = useAxios();
     const [clientForm, setClientForm] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [clientList, setClientList] = useState(true)
     const [pageSize, setPageSize] = useState(5)
     const [clients, setClients] = useState([])
@@ -28,14 +30,18 @@ const page = () => {
     });
 
     const handleSubmit = async () => {
+        setLoading(true)
         try {
             const res = await instance.post("/client/addclient/admin", clientData)
 
-            if (res.success === true) {
-                toast.success('Success Notification !', {
+            if (res.data) {
+                toast.success('Cliet is Added !', {
                     position: toast.POSITION.BOTTOM_RIGHT
                 });
                 console.log(res.data, "reeeeeeee")
+                setLoading(false)
+                setClientList(true)
+                setClientForm(false)
             }
 
             setClientData({
@@ -208,7 +214,7 @@ const columns = [
                         }
                     />
 
-                    <Button
+                 {loading === false  ? <Button
                         variant="contained"
                         onClick={handleSubmit}
                         sx={{
@@ -222,9 +228,9 @@ const columns = [
                         className="bg-[#FF730F] text-white hover:bg-[#db8e57]"
                     >
                         Submit
-                    </Button>
+                    </Button>: <Loading/> }
                 </form>
-            </Box> : clientList ? <div className='mt-6'>
+            </Box> : clientList && clients.length != 0 ? <div className='mt-6'>
 
 
             <Box>
@@ -245,7 +251,7 @@ const columns = [
 
 
 
-            </div> : null}
+            </div> : <Loading/>}
         </div>
     )
 }

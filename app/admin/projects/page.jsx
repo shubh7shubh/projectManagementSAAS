@@ -11,6 +11,7 @@ import ProjectModal from '../../../components/modals/projectModal'
 // import { useRouter } from 'next/router';
 import { useRouter } from 'next/navigation'
 import { useAxios } from "../../../utills/axios"
+import Loading from '../../../components/loader';
 
 
 
@@ -226,7 +227,7 @@ const Projects = () => {
                 </div>
             </div>
 
-            <div className='mt-4'>
+        {projects && projects.length != 0 ?    <div className='mt-4'>
                 <Box>
                     <DataGrid
                         rows={projects}
@@ -241,7 +242,7 @@ const Projects = () => {
                     />
                 </Box>
 
-            </div>
+            </div> : <Loading/>}
 
         </div>
     );

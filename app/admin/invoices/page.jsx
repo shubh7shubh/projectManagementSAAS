@@ -13,10 +13,12 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useAxios } from '../../../utills/axios';
 import { BiSolidDownload } from "react-icons/bi";
 import { IconButton, Tooltip } from '@mui/material';
+import Loading from '../../../components/loader';
 
 const page = () => {
     const instance = useAxios();
     const [invoicesForm, setInvoicesForm] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [invoicesList, setInvoicesList] = useState(true)
     const [pageSize, setPageSize] = useState(5)
     const [selectedClient, setSelectedClient] = useState({});
@@ -29,9 +31,9 @@ const page = () => {
         taxRate: '',
         price: '',
     })
-    
-    if(allInvoices){
-        console.log(allInvoices,"dfsd")
+
+    if (allInvoices) {
+        console.log(allInvoices, "dfsd")
     }
 
     const [invoiceData, setInvoiceData] = useState({
@@ -55,8 +57,8 @@ const page = () => {
     });
 
 
-    if(allInvoices){
-        console.log(allInvoices,"invoidid")
+    if (allInvoices) {
+        console.log(allInvoices, "invoidid")
     }
 
     // LIST OF ALL INVIOCES
@@ -64,7 +66,7 @@ const page = () => {
     const getAllInvoices = async () => {
         try {
             const res = await instance.get("invoices/getallinvoice/admin")
-            if(res.data){
+            if (res.data) {
                 setAllInvoices(res.data.InvoiceList)
             }
 
@@ -78,18 +80,21 @@ const page = () => {
     useEffect(() => {
         getAllInvoices()
     }, [])
-    
+
 
 
     const handleSubmit = async () => {
+        setLoading(true)
+        setSubmitBtn(false)
 
         try {
 
-            const res = await instance.post("/invoices/generate-invoice/admin",invoiceData)
+            const res = await instance.post("/invoices/generate-invoice/admin", invoiceData)
 
             if (res.data) { // Access res.data.success
 
                 toast("Invoice is created") // Access res.data.TaskList
+                setLoading(false)
                 window.open(res.data.pdfPath, "_blank");
                 // setClients(res?.data?.TaskList);
             }
@@ -109,9 +114,9 @@ const page = () => {
                     zip: ''
                 },
                 products: [
-        
+
                 ]
-        
+
             })
 
             setProduct({
@@ -122,6 +127,9 @@ const page = () => {
             })
 
             setSelectedClient({})
+            setInvoicesList(true)
+            setInvoicesForm(false)
+            getAllInvoices()
 
 
 
@@ -131,7 +139,7 @@ const page = () => {
             console.log(error)
 
         }
-   
+
 
     };
 
@@ -180,7 +188,7 @@ const page = () => {
         setSelectedClient(event.target.value)
         setInvoiceData({
             ...invoiceData,
-            client: {...invoiceData.client, company:id}
+            client: { ...invoiceData.client, company: id }
         });
 
         // setProjectData({
@@ -195,29 +203,29 @@ const page = () => {
 
     const columns = [
 
-          {
+        {
             field: "client.company",
             headerName: (
-              <div className="text-[#FF730F] font-bold">Client Id</div>
+                <div className="text-[#FF730F] font-bold">Client Id</div>
             ),
             minWidth: 150,
             flex: 0.2,
             valueGetter: (params) => {
-              return params.row.client.company;
+                return params.row.client.company;
             },
-          },
-          {
+        },
+        {
             field: "client.address",
             headerName: (
-              <div className="text-[#FF730F] font-bold">Client Address</div>
+                <div className="text-[#FF730F] font-bold">Client Address</div>
             ),
             minWidth: 150,
             flex: 0.2,
             valueGetter: (params) => {
-              return params.row.client.address;
+                return params.row.client.address;
             },
-          },
-          {
+        },
+        {
             field: 'products', // Access the 'products' field within the row
             headerName: (
                 <div className="text-[#FF730F] font-bold">Products</div>
@@ -225,21 +233,21 @@ const page = () => {
             minWidth: 200,
             flex: 0.2,
             renderCell: (params) => (
-              <Select
-                value={params.value[0]?.description || ''}
-                variant="outlined"
-                fullWidth
+                <Select
+                    value={params.value[0]?.description || ''}
+                    variant="outlined"
+                    fullWidth
                 // Handle dropdown change here if needed
-              >
-                {params.value.map((product, index) => (
-                  <MenuItem key={index} value={product.description}>
-                    {product.description}
-                  </MenuItem>
-                ))}
-              </Select>
+                >
+                    {params.value.map((product, index) => (
+                        <MenuItem key={index} value={product.description}>
+                            {product.description}
+                        </MenuItem>
+                    ))}
+                </Select>
             ),
-          },
-          {
+        },
+        {
             field: "action",
             headerName: (
                 <div className="text-[#FF730F] font-bold">Download Pdf</div>
@@ -247,15 +255,15 @@ const page = () => {
             minWidth: 100,
             flex: 0.1,
             renderCell: ({ row }) => (
-                <Box sx={{margin:"0 auto"}}>
+                <Box sx={{ margin: "0 auto" }}>
                     <Tooltip title="Download">
                         <IconButton
                             //   onClick={() => router.push(`/admin/property/edit/${row._id}`)}
                             //   onClick={() => console.log("click")}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                
-                                console.log(row,"click")
+                                window.open(row.path, "_blank");
+                                // console.log(row,"click")
                             }}
                             color="primary"
                         >
@@ -341,27 +349,27 @@ const page = () => {
                 </Typography>
                 <form>
 
-                <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Client</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={selectedClient.clientName}
-                                        label="Client"
-                                        onChange={handleClient}
+                    <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Client</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={selectedClient.clientName}
+                                label="Client"
+                                onChange={handleClient}
+                            >
+                                {clients && clients.map((client) => (
+                                    <MenuItem
+                                        key={client._id}
+                                        value={client}
                                     >
-                                        {clients && clients.map((client) => (
-                                            <MenuItem
-                                                key={client._id}
-                                                value={client}
-                                            >
-                                                {client.clientName}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Box>
+                                        {client.clientName}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Box>
 
                     {/* <TextField
                         label="Client company"
@@ -433,7 +441,7 @@ const page = () => {
                         }}
                         className="bg-[#FF730F] text-white hover:bg-[#db8e57]"
                     >
-                       {submitBtn ? "Add Another Product" : "Add Product"}
+                        {submitBtn ? "Add Another Product" : "Add Product"}
                     </Button>
 
                     {/* Product cards */}
@@ -452,7 +460,7 @@ const page = () => {
                         </div>
                     </div>
 
-            { submitBtn ?       <Button
+                    {loading === false ? <Button
                         variant="contained"
                         onClick={handleSubmit}
                         sx={{
@@ -466,9 +474,9 @@ const page = () => {
                         className="bg-[#FF730F] text-white hover:bg-[#db8e57]"
                     >
                         Submit
-                    </Button>: null}
+                    </Button> : <Loading/>}
                 </form>
-            </Box> : invoicesList ? <div className='mt-6'>
+            </Box> : invoicesList && allInvoices.length != 0 ? <div className='mt-6'>
 
 
                 <Box>
@@ -489,7 +497,7 @@ const page = () => {
 
 
 
-            </div> : null}
+            </div> : <Loading />}
         </div>
     )
 }
