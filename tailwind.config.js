@@ -238,6 +238,9 @@ module.exports = {
         'title-sm': ['20px', '26px'],
         'title-xsm': ['18px', '24px'],
       },
+            colors: {
+        'primary-orange': '#FF730F',
+      },
       spacing: {
         4.5: '1.125rem',
         5.5: '1.375rem',

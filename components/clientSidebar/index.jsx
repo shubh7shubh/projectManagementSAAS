@@ -1,6 +1,5 @@
 'use client'
 
-
 import { LuLayoutDashboard, LuContact } from "react-icons/lu";
 import { TbBrandProducthunt,TbLogout } from "react-icons/tb";
 import { PiUsersFourLight } from "react-icons/pi";
@@ -18,21 +17,21 @@ const menuItems = [
   {
     id: "dashboard",
     label: "Dashboard",
-    path: "/admin",
+    path: "/client",
     icon: <LuLayoutDashboard size={25} />,
   },
   {
     id: "projects",
-    label: "Projects",
-    path: "/admin/projects",
+    label: "Project",
+    path: "/client/clientProject",
     icon: <TbBrandProducthunt size={25} />,
   },
-  {
-    id: "clients",
-    label: "Clients",
-    path: "/admin/clients",
-    icon: <PiUsersFourLight size={25} />,
-  },
+  // {
+  //   id: "clients",
+  //   label: "Clients",
+  //   path: "/client/clients",
+  //   icon: <PiUsersFourLight size={25} />,
+  // },
   {
     id: "inbox",
     label: "Inbox",
@@ -42,15 +41,15 @@ const menuItems = [
   {
     id: "invoices",
     label: "Invoices",
-    path: "/admin/invoices",
+    path: "/client/invoices",
     icon: <LiaFileInvoiceSolid size={25} />,
   },
-  {
-    id: "contactList",
-    label: "Contact List",
-    path: "/",
-    icon: <LuContact size={25} />,
-  },
+  // {
+  //   id: "contactList",
+  //   label: "Contact List",
+  //   path: "/",
+  //   icon: <LuContact size={25} />,
+  // },
   // {
   //   id: "task",
   //   label: "Task",
@@ -59,7 +58,7 @@ const menuItems = [
   // },
 ];
 
-export default function Sidebar() {
+export default function ClientSidebar() {
     // const { sideBarOpen, setSideBarOpen } = useContext(GlobalContext);
     // const {status} = useSession()
   
