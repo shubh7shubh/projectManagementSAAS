@@ -29,6 +29,7 @@ const Login = () => {
               console.log(res.data.token,"token")
               setCookies("jwtToken", res.data.token);
               localStorage.setItem("isAdmin", false);
+              localStorage.setItem("userId", res.data.userId);
               toast("Login Successful")
               router.push("/client")
               setLoading(false)

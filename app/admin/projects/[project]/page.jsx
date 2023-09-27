@@ -1,16 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation";
-import { Button, IconButton, InputAdornment, Tooltip } from '@mui/material';
-import Box from '@mui/material/Box';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
-import { MdDeleteForever } from "react-icons/md";
-import { BsPencil } from "react-icons/bs";
-import { Input } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 // import dynamic from 'next/dynamic';
 import { useAxios } from "../../../../utills/axios";
 import Home from "../../../../components/kanbanNew/home"
@@ -27,6 +17,12 @@ const NewProject = ({ params }) => {
     const [description, setDescription] = useState('');
     const [taskFromApi, setTasksFromApi] = useState([]);
     // const [kanbanTasks, setKanbanTasks] = useState([]);
+
+
+
+    if(taskFromApi){
+        console.log(taskFromApi,"taskjh")
+    }
 
 
     const handleTask = async () => {

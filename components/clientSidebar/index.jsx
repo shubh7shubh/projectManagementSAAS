@@ -22,7 +22,7 @@ const menuItems = [
   },
   {
     id: "projects",
-    label: "Project",
+    label: "Projects",
     path: "/client/clientProject",
     icon: <TbBrandProducthunt size={25} />,
   },
@@ -41,7 +41,7 @@ const menuItems = [
   {
     id: "invoices",
     label: "Invoices",
-    path: "/client/invoices",
+    path: "/client/clientInvoice",
     icon: <LiaFileInvoiceSolid size={25} />,
   },
   // {
