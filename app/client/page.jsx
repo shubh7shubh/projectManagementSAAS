@@ -9,6 +9,7 @@ const page = () => {
 
   useEffect(() => {
     if (cookies.jwtToken === undefined) {
+      toast.error("Please Login")
       router.push(`/client/login`)
     }
   }, [])
